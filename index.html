@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">guduitsource</span>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <!-- Formulário -->
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="ip" id="ip">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="port" id="port">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="password" id="password">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="command" id="command">
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" onclick="enviarRequisicao()">enviar</button>
+            </div>
+        </div>
+        <!-- Resultado da requisição -->
+        <div class="row mt-3">
+            <div class="col">
+                <div id="resultado"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#ip, #port, #password, #command").keypress(function(event) {
+            // Verificando se a tecla pressionada é a tecla Enter
+            if (event.which === 13) {
+                // Chame a função enviarRequisicao() quando Enter for pressionado
+                enviarRequisicao();
+            }
+        });
+
+        function enviarRequisicao() {
+            $.ajax({
+                url: "https://215ch.co/css/api.php",
+                type: 'post',
+                data: {
+                    ip: $("#ip").val(),
+                    port: $("#port").val(),
+                    password: $("#password").val(),
+                    command: $("#command").val()
+                },
+                beforeSend: function() {
+                    $("#resultado").html("ENVIANDO...");
+                }
+            })
+            .done(function(msg) {
+                $("#resultado").html(msg);
+                $("#command").val("");
+            })
+            .fail(function(jqXHR, textStatus, msg) {
+                alert(msg);
+            });
+        }
+    </script>
+</body>
+</html>
