@@ -4,7 +4,7 @@
 
 O projeto GuduitSource é uma plataforma dedicada aos jogadores de Counter-Strike: Source, fornecendo recursos de ranqueamento e competições no estilo Faceit. Ele permite que os jogadores participem de partidas ranqueadas, acompanhem seu progresso, desafiem outros jogadores e compitam em torneios.
 
-## Funcionalidades Principais
+## Funcionalidades Principais (Os planos)
 
 - **Sistema de Ranqueamento**: Os jogadores podem participar de partidas ranqueadas para subir de nível e melhorar seu ranking.
   
