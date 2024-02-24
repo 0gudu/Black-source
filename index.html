@@ -16,7 +16,8 @@
     </nav>
 
     <div class="container mt-3">
-        <!-- Formulário -->
+        <!--  
+        ex-Formulário
         <div class="row">
             <div class="col">
                 <input type="text" class="form-control" placeholder="ip" id="ip">
@@ -33,12 +34,30 @@
             <div class="col">
                 <button class="btn btn-primary" onclick="enviarRequisicao()">enviar</button>
             </div>
+        
         </div>
+         -->
         <!-- Resultado da requisição -->
         <div class="row mt-3">
-            <div class="col">
-                <div id="resultado"></div>
+            <div id="playerss" class="col">
+                <div id="resultado"><button onclick="players()">buscar players</button></div>
             </div>
+            <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <h1>CT</h1>
+                    <div id="ct">
+
+                    </div>
+                  </div>
+                  <div class="col">
+                    <h1>TR</h1>
+                    <div id="tr">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
 
@@ -48,35 +67,116 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // Executa a função enviarRequisicao() quando Enter for pressionado em qualquer campo de entrada
         $("#ip, #port, #password, #command").keypress(function(event) {
-            // Verificando se a tecla pressionada é a tecla Enter
             if (event.which === 13) {
-                // Chame a função enviarRequisicao() quando Enter for pressionado
                 enviarRequisicao();
             }
         });
 
-        function enviarRequisicao() {
+        function players() {
             $.ajax({
-                url: "https://215ch.co/css/api.php",
+                url: "api.php",
                 type: 'post',
                 data: {
-                    ip: $("#ip").val(),
-                    port: $("#port").val(),
-                    password: $("#password").val(),
-                    command: $("#command").val()
+                    ip: "199.195.250.174",
+                    port: 27015,
+                    password: "counterstrike",
+                    command: "status"
                 },
                 beforeSend: function() {
                     $("#resultado").html("ENVIANDO...");
                 }
             })
             .done(function(msg) {
-                $("#resultado").html(msg);
-                $("#command").val("");
+                $("#resultado").html("");
+                //$("#command").val("");
+                
+                var players = JSON.parse(msg).slice(9);
+                excluirUltimaLinha(players);
+                console.log(players);
+                imprimirPlayers(players);
             })
             .fail(function(jqXHR, textStatus, msg) {
                 alert(msg);
             });
+        }
+        function imprimirPlayers(players) {
+            for (var i = 0; i < players.length; i++) {
+                var player = JSON.parse(players[i]); // Parsing do JSON para um objeto JavaScript
+
+                var playerdiv = $("<div class='container d-flex flex-row'></div>"); // Criando uma nova div com jQuery e adicionando a classe 'row'
+
+                // Adicionando o nome do jogador à div
+                var playerName = $("<span>" + player[2] + "</span>");
+                playerdiv.append(playerName);
+
+                playerdiv.attr("id", player[2]);
+                // Adicionando botões CT e TR à div
+                var playerName = player[2].replace(/"/g, '\''); // Substitui todas as aspas duplas por aspas simples
+                var buttonCT = $("<span><button onclick=\"changeteam(" + playerName + ", 'ct')\">CT</button></span>");
+                var buttonTR = $("<span><button onclick=\"changeteam(" + playerName + ",'tr')\">TR</button></span>");
+                playerdiv.append(buttonCT);
+                playerdiv.append(buttonTR);
+
+                // Adicionando a nova div ao elemento com ID "main"
+                $("#playerss").append(playerdiv);
+            }
+        }
+
+        function changeteam(id,team){
+            if(team == "ct"){
+                $("#\""+id+"\"").prependTo("#ct");
+
+                console.log("a função foi acionada ct");
+                callnewteam(id,"ct");
+            }else {
+                $("#"+id).prependTo("#tr");
+                console.log("a função foi acionada tr");
+                callnewteam(id,"tr");
+            }      
+        }
+
+        function callnewteam(id,team){
+            if (team == "ct"){
+                console.log("foi ct movido");
+                $.ajax({
+                url: "api.php",
+                type: 'post',
+                data: {
+                    ip: "199.195.250.174",
+                    port: 27015,
+                    password: "counterstrike",
+                    command: "sm_ft"+ id +"3"
+                },
+            })
+            .fail(function(jqXHR, textStatus, msg) {
+                alert(msg);
+            });
+            }else{
+                console.log("foi tr movido");
+                $.ajax({
+                url: "api.php",
+                type: 'post',
+                data: {
+                    ip: "199.195.250.174",
+                    port: 27015,
+                    password: "counterstrike",
+                    command: "sm_ft"+ id +"2"
+                },
+            })
+            .fail(function(jqXHR, textStatus, msg) {
+                alert(msg);
+            });
+            }
+        }
+
+        function excluirUltimaLinha(array) {
+            if (array.length === 0) {
+                return; // Retorna se a array estiver vazia
+            }
+
+            array.pop(); // Remove o último elemento da array
         }
     </script>
 </body>
