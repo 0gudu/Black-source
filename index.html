@@ -149,7 +149,7 @@
                 
                 var players = JSON.parse(msg).slice(9);
                 excluirUltimaLinha(players);
-                console.log(msg);
+                console.log(players);
                 imprimirPlayers(players);
             })
             .fail(function(jqXHR, textStatus, msg) {
@@ -157,12 +157,9 @@
             });
         }
         function imprimirPlayers(playersData) {
-            // Transformar os dados de jogadores em um array de objetos JavaScript
-            var playersArray = JSON.parse(playersData);
-
-            // Loop através de cada objeto de jogador
-            for (var i = 0; i < playersArray.length; i++) {
-                var player = playersArray[i];
+            for (var i = 0; i < playersData.length; i++) {
+                var player = JSON.parse(playersData[i]);
+                console.log(player);
                 var playerName = player[2].replace(/"/g, ''); // Remover as aspas do nome do jogador
 
                 // Verificar se a div já existe
@@ -185,6 +182,10 @@
                 }
             }
         }
+
+
+
+
 
 
 
@@ -273,7 +274,7 @@
             // Acessando o score dos TRs
             var trscore = "TR - " + data.TR;
             var roundadd = data.CT + data.TR + 1;
-            var round = "ROUND" + roundadd;
+            var round = "ROUND " + roundadd;
 
             // Atualizando o conteúdo dos elementos HTML
             $("#round").text(round);
