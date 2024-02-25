@@ -16,42 +16,37 @@
     </nav>
 
     <div class="container mt-3">
-        <!--  
-        ex-Formulário
+        enviar comando  
         <div class="row">
-            <div class="col">
-                <input type="text" class="form-control" placeholder="ip" id="ip">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control" placeholder="port" id="port">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control" placeholder="password" id="password">
-            </div>
             <div class="col">
                 <input type="text" class="form-control" placeholder="command" id="command">
             </div>
             <div class="col">
                 <button class="btn btn-primary" onclick="enviarRequisicao()">enviar</button>
             </div>
+            <div class="col">
+                <button class="btn btn-primary" onclick="mixstart()">Começar Mix</button>
+                <button class="btn btn-primary" onclick="mixstop()">Encerrar Mix</button>
+                <p id="mixx">Mix off</p>
+            </div>
         
         </div>
-         -->
-        <!-- Resultado da requisição -->
+        <div id="resultado2"></div>
         <div class="row mt-3">
             <div id="playerss" class="col">
-                <div id="resultado"><button onclick="players()">buscar players</button></div>
+                <div id="resultado"></div>
             </div>
             <div class="container">
                 <div class="row">
+                <h6 id="round">ROUND 1</h6>
                   <div class="col">
-                    <h1>CT</h1>
+                    <h1 id="ctscore">CT - 0</h1>
                     <div id="ct">
 
                     </div>
                   </div>
                   <div class="col">
-                    <h1>TR</h1>
+                    <h1 id="trscore">TR - 0</h1>
                     <div id="tr">
 
                     </div>
@@ -67,13 +62,69 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Executa a função enviarRequisicao() quando Enter for pressionado em qualquer campo de entrada
-        $("#ip, #port, #password, #command").keypress(function(event) {
-            if (event.which === 13) {
-                enviarRequisicao();
-            }
-        });
+        //update scores and players
+        setInterval(function() {
+            players();
+        }, 5000);
+        setInterval(function() {
+            scoreupdate();
+        }, 7000);
 
+        function enviarRequisicao(){
+            $.ajax({
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: $("#command").val()
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        $("#resultado2").html("Comando resposta: "+ msg);
+                        $("#command").val("");
+                    }
+                });
+        }
+        function mixstart(){
+            $.ajax({
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: "sm_start"
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        $("#mixx").html("Mix on");
+                    }
+                });
+        }
+        function mixstop(){
+            $.ajax({
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: "sm_stop"
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        $("#mixx").html("Mix off");
+                    }
+                });
+        }
         function players() {
             $.ajax({
                 url: "api.php",
@@ -85,7 +136,7 @@
                     command: "status"
                 },
                 beforeSend: function() {
-                    $("#resultado").html("ENVIANDO...");
+                    $("#resultado").html("Procurando players...");
                 }
             })
             .done(function(msg) {
@@ -94,83 +145,132 @@
                 
                 var players = JSON.parse(msg).slice(9);
                 excluirUltimaLinha(players);
-                console.log(players);
+                console.log(msg);
                 imprimirPlayers(players);
             })
             .fail(function(jqXHR, textStatus, msg) {
                 alert(msg);
             });
         }
-        function imprimirPlayers(players) {
-            for (var i = 0; i < players.length; i++) {
-                var player = JSON.parse(players[i]); // Parsing do JSON para um objeto JavaScript
+        function imprimirPlayers(playersData) {
+            var player = JSON.parse(playersData); // Parsing do JSON para um objeto JavaScript
+            
+            var playerName = player[2].replace(/"/g, ''); // Remover as aspas do nome do jogador
 
+            // Verificar se a div já existe
+            if (!$("#" + playerName).length) {
                 var playerdiv = $("<div class='container d-flex flex-row'></div>"); // Criando uma nova div com jQuery e adicionando a classe 'row'
+                playerdiv.attr("id", playerName); // Definir o ID da div como o nome do jogador
 
                 // Adicionando o nome do jogador à div
-                var playerName = $("<span>" + player[2] + "</span>");
-                playerdiv.append(playerName);
+                var playerNameSpan = $("<span>" + playerName + "</span>");
+                playerdiv.append(playerNameSpan);
 
-                playerdiv.attr("id", player[2]);
                 // Adicionando botões CT e TR à div
-                var playerName = player[2].replace(/"/g, '\''); // Substitui todas as aspas duplas por aspas simples
-                var buttonCT = $("<span><button onclick=\"changeteam(" + playerName + ", 'ct')\">CT</button></span>");
-                var buttonTR = $("<span><button onclick=\"changeteam(" + playerName + ",'tr')\">TR</button></span>");
+                var buttonCT = $("<button onclick=\"changeteam('" + playerName + "', 'ct')\">CT</button>");
+                var buttonTR = $("<button onclick=\"changeteam('" + playerName + "', 'tr')\">TR</button>");
                 playerdiv.append(buttonCT);
                 playerdiv.append(buttonTR);
 
-                // Adicionando a nova div ao elemento com ID "main"
+                // Adicionando a nova div ao elemento com ID "playerss"
                 $("#playerss").append(playerdiv);
             }
         }
 
+
         function changeteam(id,team){
             if(team == "ct"){
-                $("#\""+id+"\"").prependTo("#ct");
-
+                $("#"+id).prependTo("#ct");
+                
                 console.log("a função foi acionada ct");
                 callnewteam(id,"ct");
             }else {
                 $("#"+id).prependTo("#tr");
+                
                 console.log("a função foi acionada tr");
                 callnewteam(id,"tr");
             }      
         }
 
         function callnewteam(id,team){
-            if (team == "ct"){
+            if (team == "ct") {
                 console.log("foi ct movido");
                 $.ajax({
-                url: "api.php",
-                type: 'post',
-                data: {
-                    ip: "199.195.250.174",
-                    port: 27015,
-                    password: "counterstrike",
-                    command: "sm_ft"+ id +"3"
-                },
-            })
-            .fail(function(jqXHR, textStatus, msg) {
-                alert(msg);
-            });
-            }else{
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: "sm_ft " + id + " 3"
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        console.log(msg);
+                    }
+                });
+            }
+            else{
                 console.log("foi tr movido");
                 $.ajax({
-                url: "api.php",
-                type: 'post',
-                data: {
-                    ip: "199.195.250.174",
-                    port: 27015,
-                    password: "counterstrike",
-                    command: "sm_ft"+ id +"2"
-                },
-            })
-            .fail(function(jqXHR, textStatus, msg) {
-                alert(msg);
-            });
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: "sm_ft " + id + " 2"
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        //console.log(msg);
+                    }
+                });
             }
         }
+        function scoreupdate(){
+            $.ajax({
+                    url: "api.php", 
+                    type: "post", 
+                    data: {
+                        ip: "199.195.250.174",
+                        port: 27015,
+                        command: "score"
+                    },
+                    error: function(xhr, status, error) {
+                        // Lidar com erros
+                        console.error("Erro:", status, error);
+                    },
+                    success: function(msg) {
+                        //console.log(msg);
+                        writescore(msg);
+                    }
+                });
+        }
+        function writescore(jsonscore) {
+            
+            var trimmedJson = jsonscore.replace(/[^\x20-\x7E]/g, '');
+            console.log(trimmedJson);
+            var data = JSON.parse(trimmedJson);
 
+            // Acessando o score dos CTs
+            var ctscore = "CT - " + data.CT;
+
+            // Acessando o score dos TRs
+            var trscore = "TR - " + data.TR;
+            var roundadd = data.CT + data.TR + 1;
+            var round = "ROUND" + roundadd;
+
+            // Atualizando o conteúdo dos elementos HTML
+            $("#round").text(round);
+            $("#ctscore").text(ctscore);
+            $("#trscore").text(trscore);
+        }
+        
         function excluirUltimaLinha(array) {
             if (array.length === 0) {
                 return; // Retorna se a array estiver vazia
