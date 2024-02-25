@@ -157,29 +157,35 @@
             });
         }
         function imprimirPlayers(playersData) {
-            var player = JSON.parse(playersData); // Parsing do JSON para um objeto JavaScript
-            
-            var playerName = player[2].replace(/"/g, ''); // Remover as aspas do nome do jogador
+            // Transformar os dados de jogadores em um array de objetos JavaScript
+            var playersArray = JSON.parse(playersData);
 
-            // Verificar se a div já existe
-            if (!$("#" + playerName).length) {
-                var playerdiv = $("<div class='container d-flex flex-row'></div>"); // Criando uma nova div com jQuery e adicionando a classe 'row'
-                playerdiv.attr("id", playerName); // Definir o ID da div como o nome do jogador
+            // Loop através de cada objeto de jogador
+            for (var i = 0; i < playersArray.length; i++) {
+                var player = playersArray[i];
+                var playerName = player[2].replace(/"/g, ''); // Remover as aspas do nome do jogador
 
-                // Adicionando o nome do jogador à div
-                var playerNameSpan = $("<span>" + playerName + "</span>");
-                playerdiv.append(playerNameSpan);
+                // Verificar se a div já existe
+                if (!$("#" + playerName).length) {
+                    var playerdiv = $("<div class='container d-flex flex-row'></div>"); // Criar uma nova div com jQuery e adicionar a classe 'row'
+                    playerdiv.attr("id", playerName); // Definir o ID da div como o nome do jogador
 
-                // Adicionando botões CT e TR à div
-                var buttonCT = $("<button onclick=\"changeteam('" + playerName + "', 'ct')\">CT</button>");
-                var buttonTR = $("<button onclick=\"changeteam('" + playerName + "', 'tr')\">TR</button>");
-                playerdiv.append(buttonCT);
-                playerdiv.append(buttonTR);
+                    // Adicionar o nome do jogador à div
+                    var playerNameSpan = $("<span>" + playerName + "</span>");
+                    playerdiv.append(playerNameSpan);
 
-                // Adicionando a nova div ao elemento com ID "playerss"
-                $("#playerss").append(playerdiv);
+                    // Adicionar botões CT e TR à div
+                    var buttonCT = $("<button onclick=\"changeteam('" + playerName + "', 'ct')\">CT</button>");
+                    var buttonTR = $("<button onclick=\"changeteam('" + playerName + "', 'tr')\">TR</button>");
+                    playerdiv.append(buttonCT);
+                    playerdiv.append(buttonTR);
+
+                    // Adicionar a nova div ao elemento com ID "playerss"
+                    $("#playerss").append(playerdiv);
+                }
             }
         }
+
 
 
         function changeteam(id,team){
