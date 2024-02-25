@@ -19,6 +19,9 @@
         enviar comando  
         <div class="row">
             <div class="col">
+                <input type="text" class="form-control" placeholder="port" value="27015" id="port">
+            </div>
+            <div class="col">
                 <input type="text" class="form-control" placeholder="command" id="command">
             </div>
             <div class="col">
@@ -72,11 +75,11 @@
 
         function enviarRequisicao(){
             $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: $("#command").val()
                     },
                     error: function(xhr, status, error) {
@@ -91,11 +94,11 @@
         }
         function mixstart(){
             $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: "sm_start"
                     },
                     error: function(xhr, status, error) {
@@ -109,11 +112,11 @@
         }
         function mixstop(){
             $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: "sm_stop"
                     },
                     error: function(xhr, status, error) {
@@ -127,11 +130,11 @@
         }
         function players() {
             $.ajax({
-                url: "api.php",
+                url: "https://215ch.co/css/api.php",
                 type: 'post',
                 data: {
                     ip: "199.195.250.174",
-                    port: 27015,
+                    port: $("#port").val(),
                     password: "counterstrike",
                     command: "status"
                 },
@@ -196,11 +199,11 @@
             if (team == "ct") {
                 console.log("foi ct movido");
                 $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: "sm_ft " + id + " 3"
                     },
                     error: function(xhr, status, error) {
@@ -215,11 +218,11 @@
             else{
                 console.log("foi tr movido");
                 $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: "sm_ft " + id + " 2"
                     },
                     error: function(xhr, status, error) {
@@ -234,11 +237,11 @@
         }
         function scoreupdate(){
             $.ajax({
-                    url: "api.php", 
+                    url: "https://215ch.co/css/api.php", 
                     type: "post", 
                     data: {
                         ip: "199.195.250.174",
-                        port: 27015,
+                        port: $("#port").val(),
                         command: "score"
                     },
                     error: function(xhr, status, error) {
