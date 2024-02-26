@@ -241,15 +241,17 @@
             var trimmedJson = jsonscore.replace(/[^\x20-\x7E]/g, '');
             console.log(trimmedJson);
             var data = JSON.parse(trimmedJson);
-
-            // Acessando o score dos CTs
-            var ctscore = "CT - " + data.CT;
-
-            // Acessando o score dos TRs
-            var trscore = "TR - " + data.TR;
+            
+            
             var roundadd = data.CT + data.TR + 1;
             var round = "ROUND " + roundadd;
-
+            if (round > 15){
+                var trscore = "CT - " + data.TR;
+                var ctscore = "TR - " + data.CT;
+            }else {
+                var trscore = "TR - " + data.TR;
+                var ctscore = "CT - " + data.CT;
+            }
             // Atualizando o conteúdo dos elementos HTML
             $("#round").text(round);
             $("#ctscore").text(ctscore);
