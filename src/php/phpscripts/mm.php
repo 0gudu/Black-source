@@ -28,6 +28,7 @@ echo($ac_match);
 if ($ac_match != 0){
     //se estiver volte aquela partida
     echo("fds");
+    header("location: ../match.php");
 }else {
     //se nao se junte a outra
     $stmt = $pdo->prepare("SELECT id_match FROM matches WHERE m_state >= :numlobby"); 
@@ -60,7 +61,7 @@ if ($ac_match != 0){
         }
         $lobby = 10 - $numlobby; //qnts vagas sao necessarias pra entrar todo mundo
         //se nao existe cria outro servidor novo
-        $stmt = $pdo->prepare("INSERT INTO matches(scoreA, scoreB, map, av_level, m_state, players, serverport) VALUES (0, 0, 'vertigo', :avlevel, :vagas, :ids, :portav)"); 
+        $stmt = $pdo->prepare("INSERT INTO matches(scoreA, scoreB, map, av_level, m_state, players, serverport, runningserverhandle) VALUES (0, 0, 'vertigo', :avlevel, :vagas, :ids, :portav, 0)"); 
         $stmt->bindValue(':avlevel', $avlevel);
         $stmt->bindValue(':vagas', $lobby);
         $stmt->bindValue(':ids', $lobbyids);
@@ -68,7 +69,7 @@ if ($ac_match != 0){
         $stmt->execute();
 
         $matchId = $pdo->lastInsertId();
-        echo($matchId);
+        header("location: ../match.php");
         updateacmatch($pdo);
     }else {
         //se existe procura algum que tenha o nivel de habilidade mais proximo
@@ -120,6 +121,8 @@ if ($ac_match != 0){
         $stmt->bindValue(':vagas', $up_state);
         $stmt->bindValue(':matchs', $matchId);
         $stmt->execute();
+
+        header("location: ../match.php");
     }
 }
 
