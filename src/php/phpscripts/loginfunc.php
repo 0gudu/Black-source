@@ -10,8 +10,8 @@ $stmt->execute([':username' => $username]);
 $pass = $stmt->fetchColumn();
 
 if (password_verify($password, $pass)) {
-    $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username = :username AND passwords = :passwords"); 
-    $stmt->execute([':username' => $username, ':passwords' => $password]);
+    $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username = :username");
+    $stmt->execute([':username' => $username]);
     $id = $stmt->fetchColumn();
     $_SESSION['user'] = $id;
     header("location: ../../../index.html");
