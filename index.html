@@ -29,8 +29,7 @@
                 <button class="btn btn-primary" onclick="enviarRequisicao()">enviar</button>
             </div>
             <div class="col">
-                <button class="btn btn-primary" onclick="mixstart()">Começar Mix</button>
-                <button class="btn btn-primary" onclick="mixstop()">Encerrar Mix</button>
+                <button class="btn btn-primary" onclick="mixstart()">RE iniciar/ iniciar</button>
                 <p id="mixx">Mix off</p>
             </div>
         
@@ -100,7 +99,7 @@
                     data: {
                         ip: $("#ip").val(),
                         port: $("#port").val(),
-                        command: "sm_start"
+                        command: "resetscore"
                     },
                     error: function(xhr, status, error) {
                         // Lidar com erros
@@ -108,24 +107,6 @@
                     },
                     success: function(msg) {
                         $("#mixx").html("Mix on");
-                    }
-                });
-        }
-        function mixstop(){
-            $.ajax({
-                    url: "https://215ch.co/css/api1.php", 
-                    type: "get", 
-                    data: {
-                        ip: $("#ip").val(),
-                        port: $("#port").val(),
-                        command: "sm_stop"
-                    },
-                    error: function(xhr, status, error) {
-                        // Lidar com erros
-                        console.error("Erro:", status, error);
-                    },
-                    success: function(msg) {
-                        $("#mixx").html("Mix off");
                     }
                 });
         }
@@ -182,12 +163,6 @@
                 }
             }
         }
-
-
-
-
-
-
 
         function changeteam(id,team){
             if(team == "ct"){
