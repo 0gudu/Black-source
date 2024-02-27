@@ -22,7 +22,7 @@ O projeto GuduitSource é construído utilizando as seguintes tecnologias:
 
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap.
   
-- **Backend**: A decidir
+- **Backend**: PHP
 
 ## Licença
 
