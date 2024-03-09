@@ -32,7 +32,7 @@
             justify-content:center; 
             align-items:center;
             height: 97.5vh;
-            background-image: url("bg.png");
+            background-image: url("src/images/bg.png");
             background-repeat: no-repeat;
             background-size: cover;
             flex-direction: column;
@@ -248,7 +248,7 @@
         <div class="profile">
             <div class="profifename">
                 <div class="photoename">
-                    <div class="photo"><img src="agent.png" ></div>
+                    <div class="photo"><img src="src/images/agent.png" ></div>
                     <div class="nameebadge">
                         <div class="name">
                             USERNAME
@@ -259,7 +259,7 @@
                     </div>
                 </div>
                 <div class="level">
-                    <img src="level1.png" style="width: 2.5vw;"alt="">
+                    <img src="src/images/level1.png" style="width: 2.5vw;"alt="">
                     <div class="progress">
                         <div class="bar">
                             <b>x xp</b>
