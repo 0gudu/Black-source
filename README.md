@@ -1,8 +1,8 @@
-# GuduitSource
+# Black:source
 
 ## Descrição
 
-O projeto GuduitSource é uma plataforma dedicada aos jogadores de Counter-Strike: Source, fornecendo recursos de ranqueamento e competições no estilo Faceit. Ele permite que os jogadores participem de partidas ranqueadas, acompanhem seu progresso, desafiem outros jogadores e compitam em torneios.
+O projeto Black:source é uma plataforma dedicada aos jogadores de Counter-Strike: Source, fornecendo recursos de ranqueamento e competições no estilo Faceit. Ele permite que os jogadores participem de partidas ranqueadas, acompanhem seu progresso, desafiem outros jogadores e compitam em torneios.
 
 ## Funcionalidades Principais (Os planos)
 
@@ -18,7 +18,7 @@ O projeto GuduitSource é uma plataforma dedicada aos jogadores de Counter-Strik
 
 ## Tecnologias Utilizadas
 
-O projeto GuduitSource é construído utilizando as seguintes tecnologias:
+O projeto Black:source é construído utilizando as seguintes tecnologias:
 
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap.
   
