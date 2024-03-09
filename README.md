@@ -3,6 +3,7 @@
 ## Descrição
 
 O projeto Black:source é uma plataforma dedicada aos jogadores de Counter-Strike: Source, fornecendo recursos de ranqueamento e competições no estilo Faceit. Ele permite que os jogadores participem de partidas ranqueadas, acompanhem seu progresso, desafiem outros jogadores e compitam em torneios.
+![image](https://github.com/0gudu/Black-source/assets/89671108/ec39682a-f6da-474d-b847-0e56307fa367)*contem diversos placeholders...
 
 ## Funcionalidades Principais (Os planos)
 
